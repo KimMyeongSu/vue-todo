@@ -2,7 +2,7 @@
   <section>
     <ul>
       <li v-for="(todoItem, index) in todoItems" class="shadow" v-bind:key="todoItem.item">
-        <!-- <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem, index)"></i> -->
+        <!-- <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem,index)"></i> -->
         <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}"></i>
         <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
         <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
@@ -25,7 +25,7 @@ export default {
       this.todoItems.splice(index, 1);
       localStorage.removeItem(todoItem);
     },
-    // toggleComplete: function(todoItem, index) {
+    // toggleComplete: function(todoItem,index) {
     //   todoItem.completed = !todoItem.completed;
     //   localStorage.removeItem(todoItem.item);
     //   localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
@@ -35,6 +35,7 @@ export default {
     if (localStorage.length > 0) {
       for (var i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
+          console.log('TodoList.vue Created')
           this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
         }
       }
