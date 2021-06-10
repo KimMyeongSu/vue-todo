@@ -2,7 +2,9 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addItem="addOneItem"></TodoInput>
-    <!-- <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem"></TodoList> -->
+    <!-- TODO: 여기 에러 JSON 으로 바꾸고부터 저장반영, togle Method 안됌 
+              anonymous Compnent 나오는거 확인필요-->
+    <!-- <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem,index"></TodoList> -->
     <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem"></TodoList>
     <TodoFooter v-on:clearAll="clearAllItems"></TodoFooter>
   </div>
@@ -21,7 +23,7 @@ export default {
   },
   methods: {
     addOneItem: function(todoItem) {
-      var obj = {completed: false, item: todoItem};
+      let obj = {completed: false, item: todoItem};
       localStorage.setItem(todoItem, JSON.stringify(obj));
       this.todoItems.push(obj);
     },
@@ -41,7 +43,7 @@ export default {
   },
   created: function() {
     if (localStorage.length > 0) {
-      for (var i = 0; i < localStorage.length; i++) {
+      for (let i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
           console.log('App.vue Created');
           this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
