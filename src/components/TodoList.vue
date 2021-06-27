@@ -3,10 +3,11 @@
     <ul>
       <li v-for="(todoItem, index) in todoItems" class="shadow" v-bind:key="todoItem.item">
         <!-- TODO: index error -->
-        <!-- <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem,index)"></i> -->
-        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}"></i>
-        <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+        <i class="checkBtn fas fa-check" :class="{checkBtnCompleted: todoItem.completed}" 
+          @click="toggleComplete(todoItem,index)"></i>
+        <!-- <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}"></i> -->
+        <span :class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
+        <span class="removeBtn" @click="removeTodo(todoItem, index)">
           <i class="removeBtn fas fa-trash-alt"></i>
         </span>
       </li>
@@ -16,32 +17,27 @@
 
 <script>
 export default {
-  data: function() {
-    return {
-      todoItems: []
-    }
+  props: {
+    todoItems: Array
   },
+  // data: function() {
+  //   return {
+  //     todoItems: []
+  //   }
+  // },
   methods: {
     removeTodo: function(todoItem, index) {
-      this.todoItems.splice(index, 1);
-      localStorage.removeItem(todoItem);
+      this.$emit('removeItem', todoItem, index);
+      // this.todoItems.splice(index, 1);
+      // localStorage.removeItem(todoItem);
     },
-    // toggleComplete: function(todoItem,index) {
-    //   todoItem.completed = !todoItem.completed;
-    //   localStorage.removeItem(todoItem.item);
-    //   localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-    // }
-  },
-  created: function() {
-    if (localStorage.length > 0) {
-      for (let i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-          console.log('TodoList.vue Created')
-          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-        }
-      }
+    toggleComplete: function(todoItem) {
+      this.$emit('toggleItem', todoItem);
+      // todoItem.completed = !todoItem.completed;
+      // localStorage.removeItem(todoItem.item);
+      // localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
     }
-  }
+  },
 }
 </script>
 

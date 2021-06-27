@@ -2,10 +2,10 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addItem="addOneItem"></TodoInput>
-    <!-- TODO: 여기 에러 JSON 으로 바꾸고부터 저장반영, togle Method 안됌 
-              anonymous Compnent 나오는거 확인필요-->
-    <!-- <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem,index"></TodoList> -->
-    <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem"></TodoList>
+    <TodoList :todoItems="todoItems" v-on="ListActions"></TodoList>
+    <!-- <TodoList v-bind:todoItems="todoItems" v-on:removeItem="removeOneItem" 
+      v-on:toggleItem="toggleOneItem"></TodoList> -->
+    <!-- <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem"></TodoList> -->
     <TodoFooter v-on:clearAll="clearAllItems"></TodoFooter>
   </div>
 </template>
@@ -21,6 +21,14 @@ export default {
       todoItems: []
     }
   },
+  computed : {
+    ListActions : function(){
+      return {
+        removeItem : this.removeOneItem,
+        toggleItem : this.toggleOneItem
+      };
+    },
+  },
   methods: {
     addOneItem: function(todoItem) {
       let obj = {completed: false, item: todoItem};
@@ -31,11 +39,11 @@ export default {
       this.todoItems.splice(index, 1);
       localStorage.removeItem(todoItem.item);
     },
-    // toggleOneItem: function(todoItem, index) {
-    //   todoItem.completed = !todoItem.completed;
-    //   localStorage.removeItem(todoItem.item);
-    //   localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-    // },
+    toggleOneItem: function(todoItem) {
+      todoItem.completed = !todoItem.completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
     clearAllItems: function() {
       this.todoItems = [];
       localStorage.clear();
